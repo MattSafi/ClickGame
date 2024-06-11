@@ -13,7 +13,7 @@ let upgrades = {
   autoClicker: { cost: 50, interval: 3000, increment: 1 }, // Adds 1 click every 3 seconds
   autoClicker2: { cost: 100, interval: 1000, increment: 2 },
   disableCircle: { cost: 1000, disableCircle: true },
-  reducedCirclePenalty: { cost: 20, reducedPenalty: true },
+  reducedCirclePenalty: { cost: 200, reducedPenalty: true },
 };
 
 function onClick(event) {
