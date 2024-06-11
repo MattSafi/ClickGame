@@ -48,7 +48,7 @@ body {
 }
 
 .instructions:hover {
-    transform: translateX(100px) scale(1.2);
+    /* transform: translateX(100px) scale(1.2); */
     z-index: 1;
     cursor: pointer;
 }
@@ -227,9 +227,14 @@ body {
 
 /* Media Queries for Mobile Devices */
 @media (max-width: 600px) {
-    .container {
-        width: 90%;
+    body {
+        width: 90dvw;
         height: 90vh;
+    }
+
+    .container {
+        width: 80dvw;
+        height: 80vh;
     }
 
     button {
@@ -238,12 +243,66 @@ body {
     }
 
     .floating-text {
-        font-size: 16px;
+        font-size: 20px;
     }
 
     .circle {
-        width: 40px;
-        height: 40px;
+        position: absolute;
+        width: 55px;
+        height: 55px;
+        background: url(images/bug-regular-48.png) no-repeat;
+        background-position: center;
+        background-color: red;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        cursor: pointer;
+        border: 2px solid #222327;
+        z-index: 1;
+    }
+
+    .upgrades {
+        display: grid;
+        position: relative;
+        flex-wrap: wrap;
+        width: fit-content;
+        gap: 15px;
+        padding: 0;
+        border: 5px double rgb(43, 255, 0, 0.3);
+        border-radius: 12px;
+        background-image: linear-gradient(45deg, rgba(0, 229, 255, 0.4), rgba(236, 0, 185, 0.4));
+    }
+    
+    .upgrades button {
+        display: flex;
+        position: relative;
+        font-size: .8rem;
+        background-image: linear-gradient(45deg, rgba(255, 0, 247, 0.4), rgba(236, 224, 0, 0.4));
+        padding: 15px;
+        gap: 15px;
+        border: none;
+        border-radius: 15px;
+        justify-items: center;
+        align-items: center;
+        max-height: 35px;
+        max-width: 35px;
+        color: #222327;
+        font-weight: 600;
+        
+    }
+
+    .upgrades button:hover {
+        border: none;
+    }
+
+    .instructions {
+        display: flex;
+        max-width: fit-content;
+        
+    }
+
+    .instructions h1 {
+        font-size: .65rem;
     }
 }
 
