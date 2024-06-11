@@ -3,6 +3,7 @@ let clickMultiplier = 1;
 let autoClickerInterval = null;
 let autoClicker2Interval = null;
 let circleSpawning = true;
+let circlePenalty = 100;
 
 let upgrades = {
   upgrade1: { cost: 50, multiplier: 1 },
@@ -12,6 +13,7 @@ let upgrades = {
   autoClicker: { cost: 50, interval: 3000, increment: 1 }, // Adds 1 click every 3 seconds
   autoClicker2: { cost: 100, interval: 1000, increment: 2 },
   disableCircle: { cost: 1000, disableCircle: true },
+  reducedCirclePenalty: { cost: 20, reducedPenalty: true },
 };
 
 function onClick(event) {
@@ -35,6 +37,7 @@ function resetGame() {
     clicks = 0;
     document.getElementById("clicks").innerHTML = clicks;
     clickMultiplier = 1;
+    circlePenalty = 100;
 
     // Stop the auto-clickers if they're running
     if (autoClickerInterval !== null) {
@@ -86,6 +89,8 @@ function buyUpgrade(upgrade) {
       clickMultiplier *= 3;
     } else if (upgrade === "disableCircle") {
       circleSpawning = false; // Disable circle spawning
+    } else if (upgrade === "reducedCirclePenalty") {
+      circlePenalty = 50;
     } else {
       // For other upgrades, increase the click multiplier
       clickMultiplier += upgrades[upgrade].multiplier;
@@ -155,7 +160,7 @@ function spawnCircle() {
   setTimeout(() => {
     if (container.contains(circle)) {
       circle.remove();
-      clicks = Math.max(clicks - 100, 0); // Deduct 100 clicks if the circle is not clicked, but not below 0
+      clicks = Math.max(clicks - circlePenalty, 0);
       document.getElementById("clicks").innerHTML = clicks;
     }
   }, 3000);
