@@ -55,10 +55,10 @@ body {
 }
 
 .container {
-    margin-left: 7%;
-    margin-bottom: 10px;
     display: flex;
     position: relative;
+    margin-left: 7%;
+    margin-bottom: 10px;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -132,7 +132,7 @@ body {
     position: relative;
     flex-wrap: wrap;
     width: fit-content;
-    gap: 10px;
+    gap: 5px;
     padding: 10px;
     border: 12px double white;
     border-radius: 12px;
