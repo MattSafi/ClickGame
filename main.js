@@ -1,126 +1,139 @@
+const button = document.getElementById("button");
+const counter = document.getElementById("clicks");
+
+const modal = document.getElementById("reset-modal");
+const modalConfirm = document.getElementById("modal-confirm");
+const modalCancel = document.getElementById("modal-cancel");
+const resetButton = document.getElementById("reset-button");
+const title = document.getElementById("title");
+
+const plusOneButton = document.getElementById("+1-button");
+const x2Button = document.getElementById("x2-button");
+
+const currentMultiplier = document.getElementById("current-multiplier");
+
 let clicks = 0;
 let clickMultiplier = 1;
-let autoClickerInterval = null;
-let autoClicker2Interval = null;
-let circleSpawning = true;
-let circlePenalty = 100;
-
-let upgrades = {
-  upgrade1: { cost: 50, multiplier: 1 },
-  upgrade2: { cost: 100, multiplier: 2 },
-  upgrade3: { cost: 400, doubleClickMultiplier: true },
-  upgrade4: { cost: 600, tripleClickMultiplier: true },
-  autoClicker: { cost: 50, interval: 3000, increment: 1 }, // Adds 1 click every 3 seconds
-  autoClicker2: { cost: 100, interval: 1000, increment: 2 },
-  disableCircle: { cost: 1000, disableCircle: true },
-  reducedCirclePenalty: { cost: 200, reducedPenalty: true },
-};
 
 function onClick(event) {
   clicks += clickMultiplier;
   document.getElementById("clicks").innerHTML = clicks;
-  showFloatingText(event.clientX, event.clientY, "+1");
+  showFloatingText(event.clientX, event.clientY, "+");
+}
 
-  // Check if the user has reached 2000 clicks
+// Reset and Modal Functions
+
+resetButton.addEventListener("click", function () {
+  modal.style.display = "flex";
+});
+
+modalConfirm.addEventListener("click", function () {
+  clicks = 0;
+  clickMultiplier = 1;
+  document.getElementById("clicks").innerHTML = clicks;
+  modal.style.display = "none";
+  title.innerText = "Welcome to my Click Game! Get to 1000 Clicks to win!";
+  currentMultiplier.innerText = `Current Multiplier: ${clickMultiplier}`;
+});
+
+modalCancel.addEventListener("click", function () {
+  modal.style.display = "none";
+});
+
+// Upgrade Functions
+
+plusOneButton.addEventListener("click", function () {
+  if (clicks >= 50) {
+    clicks -= 50;
+    document.getElementById("clicks").innerHTML = clicks;
+    clickMultiplier += 1;
+    currentMultiplier.innerText = `Current Multiplier: ${clickMultiplier}`;
+  }
+});
+
+x2Button.addEventListener("click", function () {
+  if (clicks >= 200) {
+    clicks -= 200;
+    document.getElementById("clicks").innerHTML = clicks;
+    clickMultiplier *= 2;
+    currentMultiplier.innerText = `Current Multiplier: ${clickMultiplier}`;
+  }
+});
+
+currentMultiplier.innerText = `Current Multiplier: ${clickMultiplier}`;
+
+// Win Conditions
+
+button.addEventListener("click", function () {
+  if (clicks >= 1000) {
+    title.innerText = "YOU WIN!😁";
+  }
+});
+
+button.addEventListener("click", function () {
   if (clicks >= 2000) {
-    endGame();
+    title.innerText = "Okay You Can Stop Now 😅";
   }
-}
+});
 
-function endGame() {
-  // Open "endGame.html" in a new tab
-  window.open("endGame.html", "_blank");
-}
+button.addEventListener("click", function () {
+  if (clicks >= 3000) {
+    title.innerText = "Not Sure What You're Trying To Prove Here, Bud 😐";
+  }
+});
 
-function resetGame() {
-  if (confirm("Are you sure you want to reset?")) {
+button.addEventListener("click", function () {
+  if (clicks >= 4000) {
+    title.innerText = "Okay, Stop. Please. 😰";
+  }
+});
+
+button.addEventListener("click", function () {
+  if (clicks >= 5000) {
+    title.innerText = "I'm Begging You 😭";
+  }
+});
+
+button.addEventListener("click", function () {
+  if (clicks >= 6000) {
+    title.innerText = "I'm Going To Bed 😴";
+  }
+});
+
+button.addEventListener("click", function () {
+  if (clicks >= 7000) {
+    title.innerText = "Goodnight 😴";
+  }
+});
+
+button.addEventListener("click", function () {
+  if (clicks >= 8000) {
+    title.innerText = "I'm Not Coming Back 😤";
+  }
+});
+
+button.addEventListener("click", function () {
+  if (clicks >= 9000) {
+    title.innerText = "Stop Right Now. I'm Warning You 😡";
+  }
+});
+
+button.addEventListener("click", function () {
+  if (clicks >= 10000) {
     clicks = 0;
-    document.getElementById("clicks").innerHTML = clicks;
     clickMultiplier = 1;
-    circlePenalty = 100;
-
-    // Stop the auto-clickers if they're running
-    if (autoClickerInterval !== null) {
-      clearInterval(autoClickerInterval);
-      autoClickerInterval = null;
-    }
-
-    if (autoClicker2Interval !== null) {
-      clearInterval(autoClicker2Interval);
-      autoClicker2Interval = null;
-    }
-
-    // Re-enable all upgrade buttons and remove the upgrade-purchased class
-    for (let upgrade in upgrades) {
-      const upgradeButton = document.getElementById(upgrade);
-      upgradeButton.disabled = false;
-      upgradeButton.classList.remove("upgrade-purchased");
-    }
-
-    // Re-enable circle spawning
-    circleSpawning = true;
-  }
-}
-
-function buyUpgrade(upgrade) {
-  if (clicks >= upgrades[upgrade].cost) {
-    clicks -= upgrades[upgrade].cost;
     document.getElementById("clicks").innerHTML = clicks;
-    const upgradeButton = document.getElementById(upgrade);
-    upgradeButton.disabled = true; // Disable the button after purchase
-    upgradeButton.classList.add("upgrade-purchased"); // Add class to change background color
-
-    // Apply upgrade effects
-    if (upgrades[upgrade].doubleClickMultiplier) {
-      clickMultiplier *= 2; // Double the current click multiplier
-    } else if (upgrade === "autoClicker") {
-      autoClickerInterval = setInterval(() => {
-        clicks += upgrades.autoClicker.increment;
-        document.getElementById("clicks").innerHTML = clicks;
-        checkWinCondition();
-      }, upgrades.autoClicker.interval);
-    } else if (upgrade === "autoClicker2") {
-      autoClicker2Interval = setInterval(() => {
-        clicks += upgrades.autoClicker2.increment;
-        document.getElementById("clicks").innerHTML = clicks;
-        checkWinCondition();
-      }, upgrades.autoClicker2.interval);
-    } else if (upgrade === "upgrade4") {
-      clickMultiplier *= 3;
-    } else if (upgrade === "disableCircle") {
-      circleSpawning = false; // Disable circle spawning
-    } else if (upgrade === "reducedCirclePenalty") {
-      circlePenalty = 50;
-    } else {
-      // For other upgrades, increase the click multiplier
-      clickMultiplier += upgrades[upgrade].multiplier;
-    }
-  } else {
-    alert("Not enough clicks to buy this upgrade!");
+    modal.style.display = "none";
+    title.innerText = "Welcome to my Click Game! Get to 1000 Clicks to win!";
+    currentMultiplier.innerText = `Current Multiplier: ${clickMultiplier}`;
   }
-}
-
-// Function to start auto-clicker
-function startAutoClicker(upgrade) {
-  const interval = upgrades[upgrade].interval;
-  const increment = upgrades[upgrade].increment;
-  const autoClickerInterval = setInterval(() => {
-    clicks += increment;
-    document.getElementById("clicks").innerHTML = clicks;
-  }, interval);
-
-  // Store the interval in a variable so it can be stopped later
-  if (upgrade === "autoClicker") {
-    autoClickerInterval = autoClickerInterval;
-  } else if (upgrade === "autoClicker2") {
-    autoClicker2Interval = autoClickerInterval;
-  }
-}
+});
+// Floating plus symbols
 
 function showFloatingText(x, y, text) {
   const floatingText = document.createElement("div");
   floatingText.className = "floating-text";
-  floatingText.textContent = "+"; // Always display "+"
+  floatingText.textContent = "+";
 
   // Append the floating text to the container
   const container = document.querySelector(".container");
@@ -136,35 +149,3 @@ function showFloatingText(x, y, text) {
     floatingText.remove();
   }, 1000);
 }
-
-// Function to create a randomly spawning circle
-function spawnCircle() {
-  if (!circleSpawning) return; // Do not spawn circles if disabled
-
-  const circle = document.createElement("div");
-  circle.className = "circle";
-
-  const container = document.querySelector(".container");
-  const rect = container.getBoundingClientRect();
-  const x = Math.random() * (rect.width - 50); // 50 is the width of the circle
-  const y = Math.random() * (rect.height - 50); // 50 is the height of the circle
-  circle.style.left = `${x}px`;
-  circle.style.top = `${y}px`;
-
-  container.appendChild(circle);
-
-  circle.addEventListener("click", () => {
-    circle.remove();
-  });
-
-  setTimeout(() => {
-    if (container.contains(circle)) {
-      circle.remove();
-      clicks = Math.max(clicks - circlePenalty, 0);
-      document.getElementById("clicks").innerHTML = clicks;
-    }
-  }, 3000);
-}
-
-// Spawn a circle every 8 seconds
-setInterval(spawnCircle, 8000);
